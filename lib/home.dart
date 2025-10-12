@@ -9,11 +9,31 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String imagem = "bola_azul",texto_jogador = "Escolha uma opção";
+  String imagem = "bola_azul",texto_jogador = "Escolha uma opção",_texto_maquina = "Escolha da máquina";
   String jogador = "";
   List<String> jogadas = ["pedra","papel","tesoura"];
-  int maquina = -1;
   Random random = Random();
+
+  void _play (String choice){
+
+    int num_jogada = random.nextInt(3);
+    imagem = jogadas[num_jogada];
+
+    if(choice == "pedra" && imagem == "tesoura" || choice == "papel" && imagem == "pedra" || choice == "tesoura" && imagem == "papel" ){
+      _texto_maquina = "Jogador venceu";
+    }else if(choice == "pedra" && imagem == "papel" || choice == "papel" && imagem == "tesoura" || choice == "tesoura" && imagem == "pedra" ){
+      _texto_maquina = "Jogador perdeu";
+    }else{
+      _texto_maquina = "Empate";
+    }
+
+    print("xxx");
+    setState(() {
+      
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +45,7 @@ class _HomeState extends State<Home> {
           
           Padding(
             padding: EdgeInsets.only(top: 40),
-            child: Text("Escolha da máquina"),),
+            child: Text(_texto_maquina,style: TextStyle(fontSize: 30),),),
           Padding(
             padding: EdgeInsets.only(top: 40),
             child: Center(
@@ -40,46 +60,19 @@ class _HomeState extends State<Home> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-              TextButton(onPressed: (){
-                jogador = "pedra";
-                maquina = random.nextInt(3);
-                imagem = jogadas[maquina];
-                texto_jogador = "O jogador escolheu pedra";
-                setState(() {
-                  
-                });
-              }, child: Center(
+              GestureDetector(
+                onTap: () =>  _play("pedra"),
                 child: Image.asset("images/pedra.png", width: 120, height: 120),
-                
-              ),),
-              TextButton(onPressed: (){
-                jogador = "papel";
-                maquina = random.nextInt(3);
-                imagem = jogadas[maquina];
-                texto_jogador = "O jogador escolheu papel";
-                setState(() {
-                  
-                });
-              }, child: Center(
+              ),
+              GestureDetector(
+                onTap: () =>  _play("papel"),
                 child: Image.asset("images/papel.png", width: 120, height: 120),
-                
-              ),),
-              TextButton(onPressed: (){
-                jogador = "tesoura";
-                maquina = random.nextInt(3);
-                imagem = jogadas[maquina];
-                texto_jogador = "O jogador escolheu tesoura";
-                setState(() {
-                  
-                });
-              }, child: Center(
+              ),
+              GestureDetector(
+                onTap: () =>  _play("tesoura"),
                 child: Image.asset("images/tesoura.png", width: 120, height: 120),
-                
-              ),),
-            ],
-          ),
-          ) 
-          )
+              )]
+          )))
         ],
       ),
     );
